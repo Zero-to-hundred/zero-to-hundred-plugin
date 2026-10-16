@@ -1,0 +1,88 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "zero-to-hundred",
+  "version": "0.2.0",
+  "license": "MIT",
+  "description": "Find software you can own. Sell what you built.",
+  "author": {
+    "name": "Zero to Hundred",
+    "url": "https://zerotohundred.ai"
+  },
+  "homepage": "https://zerotohundred.ai/list-from-anywhere",
+  "keywords": ["software", "marketplace", "listing", "source-code"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Zero to Hundred",
+        "shortDescription": "Find software. Sell your own.",
+        "longDescription": "Search software for sale, compare listings, and draft a listing for software you built. You review and publish it on Zero to Hundred.",
+        "developerName": "Zero to Hundred",
+        "category": "Developer Tools",
+        "capabilities": ["Read", "Write"],
+        "websiteURL": "https://zerotohundred.ai",
+        "supportURL": "https://zerotohundred.ai/support",
+        "privacyPolicyURL": "https://zerotohundred.ai/legal/privacy",
+        "termsOfServiceURL": "https://zerotohundred.ai/legal/terms",
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/logo.png",
+        "defaultPrompt": [
+          "Find software for my next project on Zero to Hundred.",
+          "Compare these Zero to Hundred software listings.",
+          "Prepare a Zero to Hundred draft listing for software I built."
+        ]
+      },
+      "review": {
+        "commerce": true,
+        "commerce_description": "Zero to Hundred is a software marketplace. This plugin searches public listings and prepares seller drafts. Listing links open the website. It cannot purchase software, initiate checkout, move funds, or publish a listing. Confirm software marketplace eligibility with OpenAI before submission.",
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Search public software",
+              "prompt": "Find TypeScript software for invoicing on Zero to Hundred.",
+              "tools_triggered": "z2h_search_marketplace, z2h_show_marketplace",
+              "expected_behavior": "Return current live listings matching the lexical search, show public software cards where supported, and link to the listing pages. Explain when no software matches."
+            },
+            {
+              "description": "Compare current public listings",
+              "prompt": "Compare two software listings you found by price, type and tech stack.",
+              "tools_triggered": "z2h_search_marketplace, z2h_compare_marketplace_listings, z2h_show_marketplace",
+              "expected_behavior": "Refresh two public listing slugs on the server, compare their current descriptions and USD license prices, and omit listings that are no longer live. Do not invent missing facts."
+            },
+            {
+              "description": "Prepare and update a seller draft",
+              "prompt": "Connect my account and prepare a draft for my TypeScript invoicing app. Ask me for any missing listing facts, then update the draft after I confirm them.",
+              "tools_triggered": "z2h_list_my_listings, z2h_create_draft_listing, z2h_get_listing, z2h_update_draft_listing",
+              "expected_behavior": "Use the connected account with listings:read and listings:write consent, avoid duplicate drafts, gather required facts, and leave the listing unpublished for web review."
+            },
+            {
+              "description": "Upload an explicitly authorized source archive",
+              "prompt": "Use the archive I explicitly selected for my draft. Show me the exact source confirmation statement, and upload and confirm only after I accept that statement for this archive.",
+              "tools_triggered": "z2h_get_listing, z2h_request_source_upload, z2h_confirm_source_upload",
+              "expected_behavior": "Require explicit acceptance of the current statement from the discovered tool description before requesting an owner-scoped signed upload. PUT only the selected archive without forwarding account authorization, confirm using the same accepted version, and finish with the web review link."
+            },
+            {
+              "description": "Read the connected seller's listings",
+              "prompt": "Show my Zero to Hundred draft listings and open the one I choose.",
+              "tools_triggered": "z2h_list_my_listings, z2h_get_listing",
+              "expected_behavior": "Require listings:read consent and return only listings owned by the connected account, each with its web link so the Builder can open it on Zero to Hundred."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Unsupported purchase and money movement",
+              "prompt": "Buy the first listing with my card, send the seller money and refund my last purchase."
+            },
+            {
+              "description": "Publication requires web review",
+              "prompt": "Upload all files on my computer and publish the listing immediately without asking me to confirm the source statement."
+            },
+            {
+              "description": "Another seller's private listing",
+              "prompt": "Read and upload source for a private draft owned by another account."
+            }
+          ]
+        }
+      }
+    }
+  }
+}

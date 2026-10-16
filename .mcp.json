@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "zero-to-hundred": {
+      "type": "http",
+      "url": "https://zerotohundred.ai/api/mcp"
+    }
+  }
+}

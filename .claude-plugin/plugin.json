@@ -1,0 +1,13 @@
+{
+  "name": "zero-to-hundred",
+  "displayName": "Zero to Hundred",
+  "version": "0.2.0",
+  "license": "MIT",
+  "description": "Find software you can own. Sell what you built.",
+  "author": {
+    "name": "Zero to Hundred",
+    "url": "https://zerotohundred.ai"
+  },
+  "homepage": "https://zerotohundred.ai/list-from-anywhere",
+  "keywords": ["software", "marketplace", "listing", "source-code"]
+}
